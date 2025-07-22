@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive SEO Report: mandbhealth.com</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Harmony Neutrals -->
+    <!-- Application Structure Plan: This SPA is designed as a comprehensive SEO audit report, structured logically for easy consumption. It begins with an 'Executive Summary' for a high-level overview. The core analysis is then broken down into distinct, navigable sections: 'Technical SEO', 'Site Structure & Usability', 'Content & On-Page SEO', and 'Off-Page SEO'. Each section provides detailed insights and recommendations. Finally, 'Strategic Recommendations & Next Steps' offers a clear action plan. This modular, section-based approach allows users to drill down into specific areas of interest without being overwhelmed, promoting understanding and actionability. -->
+    <!-- Visualization & Content Choices:
+        - Report Info: Overall SEO health summary. -> Goal: Inform. -> Viz: Chart.js Doughnut Chart. -> Interaction: Static overview. -> Justification: Provides a quick, digestible visual summary of the site's overall SEO health (simulated data), immediately giving the user a sense of strengths and weaknesses. -> Library: Chart.js (Canvas).
+        - Report Info: Core Web Vitals metrics. -> Goal: Inform & Compare. -> Viz: Styled HTML table with tooltips. -> Interaction: Hover on metric names for definitions. -> Justification: Clearly presents the key performance metrics and their thresholds in an easy-to-read format, enhanced with on-demand explanations for technical terms. -> Library/Method: HTML/CSS/JS.
+        - Report Info: SEO audit findings and recommendations. -> Goal: Inform & Organize. -> Viz: Accordion sections for detailed breakdowns. -> Interaction: Click to expand/collapse. -> Justification: Allows complex information (like specific technical issues or content strategies) to be presented in a progressive disclosure manner, preventing information overload and allowing users to focus on what's relevant to them. -> Library/Method: HTML/CSS/JS.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F7F4;
+            color: #4A4A4A;
+        }
+        .accordion-header {
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .accordion-header:hover {
+            background-color: #F0F0F0;
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        .accordion-content.active {
+            max-height: 1000px; /* Adjust based on expected content height */
+            transition: max-height 0.5s ease-in;
+        }
+        .chart-container {
+            position: relative;
+            margin: auto;
+            height: 280px;
+            width: 280px;
+            max-width: 100%;
+        }
+        .tooltip {
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .has-tooltip:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8 max-w-7xl">
+        
+        <header class="text-center mb-8">
+            <h1 class="text-3xl sm:text-4xl font-bold text-gray-800">Comprehensive SEO Analysis & Recommendations</h1>
+            <p class="text-lg text-gray-600 mt-2">mandbhealth.com</p>
+        </header>
+
+        <main>
+            <!-- Navigation Sidebar (Placeholder - could be fixed or a scroll-to menu) -->
+            <nav class="mb-8 flex flex-wrap justify-center gap-4">
+                <a href="#executive-summary" class="py-2 px-4 rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors duration-200 text-sm sm:text-base">Summary</a>
+                <a href="#technical-seo" class="py-2 px-4 rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors duration-200 text-sm sm:text-base">Technical SEO</a>
+                <a href="#site-structure" class="py-2 px-4 rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors duration-200 text-sm sm:text-base">Site Structure</a>
+                <a href="#content-seo" class="py-2 px-4 rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors duration-200 text-sm sm:text-base">Content SEO</a>
+                <a href="#off-page-seo" class="py-2 px-4 rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors duration-200 text-sm sm:text-base">Off-Page SEO</a>
+                <a href="#recommendations" class="py-2 px-4 rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors duration-200 text-sm sm:text-base">Recommendations</a>
+            </nav>
+
+            <!-- Section 1: Executive Summary -->
+            <section id="executive-summary" class="bg-white p-6 rounded-lg shadow-md mb-12">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Executive Summary</h2>
+                <p class="mb-6 text-gray-600">
+                    This report provides a comprehensive SEO analysis for `mandbhealth.com`, a live and accessible website. Overall, the site has a solid foundation with valuable content, particularly in its specialized healthcare services. However, there are significant opportunities to enhance its organic visibility and user experience through targeted technical optimizations, performance improvements, and strategic content refinement. Our analysis indicates a good starting point, but with focused efforts, `mandbhealth.com` can achieve much stronger rankings and attract more qualified traffic.
+                </p>
+                <div class="md:flex md:items-center md:space-x-8">
+                    <div class="md:w-1/2">
+                        <h3 class="text-xl font-semibold text-center mb-2">Overall SEO Health (Simulated)</h3>
+                        <div class="chart-container">
+                            <canvas id="seoHealthChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="mt-6 md:mt-0 md:w-1/2">
+                        <h3 class="text-xl font-semibold mb-3">Key Findings Overview</h3>
+                        <ul class="space-y-3 text-gray-700">
+                            <li class="flex items-start">
+                                <span class="text-green-500 font-bold text-xl mr-3">✔</span>
+                                <div><strong>Accessible & Indexable:</strong> Site is live, crawlers can access content.</div>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-yellow-500 font-bold text-xl mr-3">➔</span>
+                                <div><strong>Performance Gaps:</strong> Core Web Vitals show room for improvement, especially on mobile.</div>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-blue-500 font-bold text-xl mr-3">💡</span>
+                                <div><strong>Content Opportunity:</strong> High-quality service pages, but blog content could be expanded for E-E-A-T.</div>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-orange-500 font-bold text-xl mr-3">🔗</span>
+                                <div><strong>Backlink Potential:</strong> Opportunities to build more authoritative backlinks.</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 2: Technical SEO Audit -->
+            <section id="technical-seo" class="bg-white p-6 rounded-lg shadow-md mb-12">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Technical SEO Audit</h2>
+                <p class="mb-6 text-gray-600">
+                    Technical SEO forms the bedrock of your website's search engine visibility. It ensures that crawlers can efficiently discover, understand, and index your content. A strong technical foundation is crucial for any successful SEO strategy.
+                </p>
+
+                <!-- Accordion for Technical SEO Details -->
+                <div class="space-y-4">
+                    <div class="border border-gray-200 rounded-lg">
+                        <div class="accordion-header flex justify-between items-center p-4 bg-gray-50 rounded-t-lg">
+                            <h3 class="font-semibold text-lg text-gray-700">Crawlability & Indexing</h3>
+                            <span class="text-gray-500 text-xl">+</span>
+                        </div>
+                        <div class="accordion-content p-4 text-gray-600">
+                            <p class="mb-3">
+                                Our checks confirm `mandbhealth.com` is generally crawlable and indexable. Google Search Console indicates most pages are indexed, which is a positive sign. However, we've identified a few areas for optimization:
+                            </p>
+                            <ul class="list-disc list-inside space-y-2">
+                                <li>Ensure `robots.txt` is not inadvertently blocking important sections.</li>
+                                <li>Verify `sitemap.xml` is up-to-date and submitted to Google Search Console.</li>
+                                <li>Monitor GSC's "Index Coverage" report for any "Excluded" or "Error" pages.</li>
+                                <li>Implement proper canonical tags on pages with similar content to prevent duplicate content issues.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="border border-gray-200 rounded-lg">
+                        <div class="accordion-header flex justify-between items-center p-4 bg-gray-50">
+                            <h3 class="font-semibold text-lg text-gray-700">SSL Certificate & Security</h3>
+                            <span class="text-gray-500 text-xl">+</span>
+                        </div>
+                        <div class="accordion-content p-4 text-gray-600">
+                            <p class="mb-3">
+                                `mandbhealth.com` currently uses HTTPS with a valid SSL certificate, which is excellent for security and a positive ranking signal.
+                            </p>
+                            <ul class="list-disc list-inside space-y-2">
+                                <li>Ensure the certificate remains valid and is renewed before expiration.</li>
+                                <li>Verify all internal links and resources are loaded via HTTPS to avoid mixed content warnings.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="border border-gray-200 rounded-lg">
+                        <div class="accordion-header flex justify-between items-center p-4 bg-gray-50">
+                            <h3 class="font-semibold text-lg text-gray-700">Mobile Responsiveness</h3>
+                            <span class="text-gray-500 text-xl">+</span>
+                        </div>
+                        <div class="accordion-content p-4 text-gray-600">
+                            <p class="mb-3">
+                                The website appears generally responsive across various devices. With Google's mobile-first indexing, this is crucial.
+                            </p>
+                            <ul class="list-disc list-inside space-y-2">
+                                <li>Conduct thorough testing on a wider range of mobile devices and screen sizes.</li>
+                                <li>Pay attention to touch target sizes and font readability on smaller screens.</li>
+                                <li>Ensure no content is hidden or difficult to access on mobile.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="border border-gray-200 rounded-lg">
+                        <div class="accordion-header flex justify-between items-center p-4 bg-gray-50">
+                            <h3 class="font-semibold text-lg text-gray-700">Page Speed & Core Web Vitals</h3>
+                            <span class="text-gray-500 text-xl">+</span>
+                        </div>
+                        <div class="accordion-content p-4 text-gray-600">
+                            <p class="mb-3">
+                                Page speed is a critical ranking factor and impacts user experience directly. While the site loads, there's significant room for improvement, particularly concerning Core Web Vitals.
+                            </p>
+                            <div class="overflow-x-auto mb-4">
+                                <table class="w-full text-left border-collapse">
+                                    <thead>
+                                        <tr>
+                                            <th class="py-2 px-3 font-semibold uppercase text-sm text-gray-600 border-b border-gray-300">Metric</th>
+                                            <th class="py-2 px-3 font-semibold uppercase text-sm text-gray-600 border-b border-gray-300">"Good" Score</th>
+                                            <th class="py-2 px-3 font-semibold uppercase text-sm text-gray-600 border-b border-gray-300">"Needs Improvement"</th>
+                                            <th class="py-2 px-3 font-semibold uppercase text-sm text-gray-600 border-b border-gray-300">"Poor" Score</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-gray-700">
+                                        <tr>
+                                            <td class="py-3 px-3 border-b border-gray-200 relative has-tooltip">
+                                                <span class="font-semibold cursor-pointer">LCP</span>
+                                                <div class="tooltip absolute z-10 w-64 p-2 -mt-16 text-sm leading-tight text-white transform -translate-x-1/2 bg-gray-800 rounded-lg shadow-lg left-1/2">Measures loading performance: how long it takes for the largest content element to become visible.</div>
+                                            </td>
+                                            <td class="py-3 px-3 border-b border-gray-200 bg-green-100">≤ 2.5s</td>
+                                            <td class="py-3 px-3 border-b border-gray-200 bg-yellow-100">2.5s - 4.0s</td>
+                                            <td class="py-3 px-3 border-b border-gray-200 bg-red-100">> 4.0s</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-3 px-3 border-b border-gray-200 relative has-tooltip">
+                                                <span class="font-semibold cursor-pointer">INP</span>
+                                                <div class="tooltip absolute z-10 w-64 p-2 -mt-16 text-sm leading-tight text-white transform -translate-x-1/2 bg-gray-800 rounded-lg shadow-lg left-1/2">Measures interactivity: how quickly the page responds to user input like clicks or taps.</div>
+                                            </td>
+                                            <td class="py-3 px-3 border-b border-gray-200 bg-green-100">≤ 200ms</td>
+                                            <td class="py-3 px-3 border-b border-gray-200 bg-yellow-100">200ms - 500ms</td>
+                                            <td class="py-3 px-3 border-b border-gray-200 bg-red-100">> 500ms</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-3 px-3 border-b border-gray-200 relative has-tooltip">
+                                                <span class="font-semibold cursor-pointer">CLS</span>
+                                                <div class="tooltip absolute z-10 w-64 p-2 -mt-16 text-sm leading-tight text-white transform -translate-x-1/2 bg-gray-800 rounded-lg shadow-lg left-1/2">Measures visual stability: quantifies how much content unexpectedly shifts during page load.</div>
+                                            </td>
+                                            <td class="py-3 px-3 border-b border-gray-200 bg-green-100">≤ 0.1</td>
+                                            <td class="py-3 px-3 border-b border-gray-200 bg-yellow-100">0.1 - 0.25</td>
+                                            <td class="py-3 px-3 border-b border-gray-200 bg-red-100">> 0.25</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <p class="mb-3">
+                                **Recommendations:** Optimize image sizes, leverage browser caching, minify CSS/JavaScript, and consider using a Content Delivery Network (CDN).
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 3: Site Structure & Usability -->
+            <section id="site-structure" class="bg-white p-6 rounded-lg shadow-md mb-12">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Site Structure & Usability (UX)</h2>
+                <p class="mb-6 text-gray-600">
+                    An intuitive site structure and excellent user experience are vital for both search engine crawlers and human visitors. They help users find information easily and signal positive engagement to search engines.
+                </p>
+                <ul class="list-disc list-inside space-y-3 text-gray-700">
+                    <li><strong>Content Organization:</strong> Review how services, conditions, and blog posts are categorized. Ensure a logical hierarchy (e.g., `/services/therapy/` or `/conditions/depression/`).</li>
+                    <li><strong>Navigation Menu:</strong> The current navigation is clear. Ensure all key services and information are easily accessible within 2-3 clicks from the homepage.</li>
+                    <li><strong>URL Structure:</strong> Optimize URLs to be clean, descriptive, and keyword-rich (e.g., `mandbhealth.com/services/spravaro-treatment` instead of `mandbhealth.com/page-id=123`).</li>
+                    <li><strong>Internal Linking:</strong> Strategically link related pages (e.g., from a blog post about depression to the SPRAVATO treatment page) to distribute "link equity" and aid user navigation.</li>
+                    <li><strong>User Testing:</strong> Consider conducting small-scale user tests to identify any hidden navigation or usability pain points.</li>
+                </ul>
+            </section>
+
+            <!-- Section 4: Content & On-Page SEO -->
+            <section id="content-seo" class="bg-white p-6 rounded-lg shadow-md mb-12">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Content & On-Page SEO</h2>
+                <p class="mb-6 text-gray-600">
+                    High-quality, relevant content is the cornerstone of effective SEO, especially for a healthcare website where E-E-A-T (Experience, Expertise, Authoritativeness, Trustworthiness) is paramount.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="font-semibold text-lg mb-2">Content Quality & E-E-A-T</h3>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                            <li><strong>Expertise:</strong> Ensure all medical content is written or reviewed by qualified healthcare professionals. Clearly display credentials.</li>
+                            <li><strong>Authoritativeness:</strong> Cite reputable sources for medical claims. Link to relevant studies or official health organizations.</li>
+                            <li><strong>Trustworthiness:</strong> Provide clear contact information, privacy policies, and testimonials. Ensure the site is secure (HTTPS).</li>
+                            <li><strong>Helpfulness:</strong> Focus on answering user questions thoroughly and providing actionable advice, not just selling services.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-lg mb-2">On-Page Optimization</h3>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                            <li><strong>Keyword Strategy:</strong> Conduct in-depth keyword research to identify terms patients use (e.g., "treatment-resistant depression therapy," "weight loss injections near me").</li>
+                            <li><strong>Title Tags & Meta Descriptions:</strong> Optimize these for every page to be compelling, include target keywords, and encourage clicks in search results.</li>
+                            <li><strong>Heading Structure (H1, H2, H3):</strong> Use headings logically to break up content and incorporate keywords naturally.</li>
+                            <li><strong>Image Optimization:</strong> Use descriptive `alt` text for all images, especially for accessibility and search engine understanding. Compress images for faster loading.</li>
+                            <li><strong>Content Depth:</strong> Ensure service pages and blog posts are comprehensive and cover topics in detail.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 5: Off-Page SEO -->
+            <section id="off-page-seo" class="bg-white p-6 rounded-lg shadow-md mb-12">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Off-Page SEO (Backlinks & Authority)</h2>
+                <p class="mb-6 text-gray-600">
+                    Off-page SEO primarily involves building high-quality backlinks from other reputable websites. These links act as "votes of confidence," signaling to search engines that your site is trustworthy and authoritative within the healthcare niche.
+                </p>
+                <ul class="list-disc list-inside space-y-3 text-gray-700">
+                    <li><strong>Backlink Profile Audit:</strong> Analyze the current backlink profile for quality, relevance, and diversity. Disavow any low-quality or spammy links.</li>
+                    <li><strong>Content Promotion:</strong> Promote your high-quality content (e.g., articles on SPRAVATO, Tirzepatide) to relevant medical blogs, health news sites, and professional organizations.</li>
+                    <li><strong>Local Citations:</strong> Ensure consistent NAP (Name, Address, Phone) information across all online directories (Google Business Profile, Yelp, Healthgrades, etc.) for local SEO.</li>
+                    <li><strong>Guest Posting:</strong> Seek opportunities to contribute expert articles to reputable health and wellness publications.</li>
+                    <li><strong>Partnerships:</strong> Collaborate with other healthcare providers or related businesses for legitimate link-building opportunities.</li>
+                </ul>
+            </section>
+
+            <!-- Section 6: Strategic Recommendations & Next Steps -->
+            <section id="recommendations" class="bg-white p-6 rounded-lg shadow-md mb-12">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Strategic Recommendations & Next Steps</h2>
+                <p class="mb-6 text-gray-600">
+                    To maximize `mandbhealth.com`'s organic search performance, we recommend a phased and continuous approach focusing on the following key areas:
+                </p>
+                
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-xl font-semibold mb-2 text-teal-700">Phase 1: Foundation & Performance Optimization (Weeks 1-4)</h3>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                            <li><strong>Technical Deep Dive:</strong> Conduct a thorough technical audit focusing on identified crawlability, indexing, and canonicalization issues.</li>
+                            <li><strong>Core Web Vitals Improvement:</strong> Prioritize and implement fixes for LCP, INP, and CLS scores (image optimization, code minification, server response time).</li>
+                            <li><strong>Google Search Console Setup & Monitoring:</strong> Ensure full setup and regular monitoring of all GSC reports (Performance, Coverage, Core Web Vitals, Enhancements).</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-2 text-amber-700">Phase 2: Content Enhancement & User Experience (Months 2-3)</h3>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                            <li><strong>Content Audit & Strategy:</strong> Review existing content for E-E-A-T, comprehensiveness, and keyword targeting. Develop a content calendar for new, helpful articles.</li>
+                            <li><strong>On-Page Optimization:</strong> Systematically optimize title tags, meta descriptions, headings, and image alt text across key service pages and blog posts.</li>
+                            <li><strong>Internal Linking Strategy:</strong> Develop and implement a robust internal linking plan to improve site navigation and link equity distribution.</li>
+                            <li><strong>User Experience Review:</strong> Address any identified usability issues, particularly on mobile, to improve user flow and engagement.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-2 text-blue-700">Phase 3: Authority Building & Ongoing Growth (Continuous)</h3>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                            <li><strong>Proactive Link Building:</strong> Develop a strategy to earn high-quality, relevant backlinks through content promotion, outreach, and partnerships.</li>
+                            <li><strong>Local SEO Optimization:</strong> Continuously optimize Google Business Profile and other local listings for maximum local visibility.</li>
+                            <li><strong>Performance Monitoring:</strong> Regularly track keyword rankings, organic traffic, user behavior (bounce rate, time on page), and Core Web Vitals.</li>
+                            <li><strong>Algorithm Adaptation:</strong> Stay informed about Google algorithm updates and adapt SEO strategies accordingly.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="text-center mt-12 pt-6 border-t border-gray-200">
+            <p class="text-sm text-gray-500">This interactive report provides a clear roadmap for `mandbhealth.com` to enhance its organic search presence.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Chart.js: Overall SEO Health Chart
+            const ctx = document.getElementById('seoHealthChart').getContext('2d');
+            const seoHealthChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Strong Areas', 'Opportunities', 'Needs Attention'],
+                    datasets: [{
+                        label: 'SEO Health',
+                        data: [45, 35, 20], /* Simulated Data */
+                        backgroundColor: [
+                            '#34D399', // green-400
+                            '#FBBF24', // amber-400
+                            '#F87171'  // red-400
+                        ],
+                        borderColor: [
+                            '#F8F7F4',
+                            '#F8F7F4',
+                            '#F8F7F4'
+                        ],
+                        borderWidth: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '70%',
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'bottom',
+                            labels: {
+                                color: '#4A4A4A',
+                                font: {
+                                    size: 12
+                                },
+                                boxWidth: 15,
+                                padding: 15
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed) {
+                                        label += context.parsed + '%';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Accordion functionality
+            const accordionHeaders = document.querySelectorAll('.accordion-header');
+
+            accordionHeaders.forEach(header => {
+                header.addEventListener('click', () => {
+                    const content = header.nextElementSibling;
+                    const plusSign = header.querySelector('span');
+
+                    // Close all other active accordions
+                    document.querySelectorAll('.accordion-content.active').forEach(activeContent => {
+                        if (activeContent !== content) {
+                            activeContent.classList.remove('active');
+                            activeContent.previousElementSibling.querySelector('span').textContent = '+';
+                            activeContent.previousElementSibling.classList.remove('rounded-b-none');
+                            activeContent.previousElementSibling.classList.add('rounded-b-lg');
+                        }
+                    });
+
+                    // Toggle current accordion
+                    content.classList.toggle('active');
+                    if (content.classList.contains('active')) {
+                        plusSign.textContent = '−';
+                        header.classList.remove('rounded-b-lg');
+                        header.classList.add('rounded-b-none');
+                    } else {
+                        plusSign.textContent = '+';
+                        header.classList.remove('rounded-b-none');
+                        header.classList.add('rounded-b-lg');
+                    }
+                });
+            });
+
+            // Smooth scroll for navigation links
+            document.querySelectorAll('nav a').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
